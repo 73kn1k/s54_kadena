@@ -1,6 +1,6 @@
-;s54 deploy tests by 7<
+; s54 deploy tests by 7<
 
-; ; key-set cfg
+; ; keysets cfg
 ;  "tk_teknik_keyset": {
 ;    "pred": "keys-all",
 ;    "keys": [
@@ -14,7 +14,8 @@
 ;    "max_size": {"int":5},
 ;    "collection_name": "tk-collection-test-00",
 ;    "collection_id": "collection:35p6y-UKxoDAT_tpMHG7hqVgZ2JbvHeF1xdiPJNcxd0",
-;    "uri": "https://demo2.54.wtf/metadata?token=Token00/1",
+;    "uri": "https://demo2.54.wtf/metadata?token=Token00/0", ; <-- second transaction
+;    "uri": "https://demo2.54.wtf/metadata?token=Token00/1", ; <-- third transaction
 ;    "minttoac1": "k:b3b015a348f8b9664bb159d28d76b192d88e981e2a18bd7f83ad18035118b07e",
 ;    "minttoac2": "k:eabc6563b14c28dd0ef0576b1a5c279febbf09e21f6e7c8324e5c4b15c7609c4",
 ;    "royalty_spec": {
@@ -76,7 +77,7 @@
 ;  ; first transasaction(depoly)
 (create-collection 
     (create-collection-id 
-        (read-msg 'collection_name) ; "tk-collection-test-03"
+        (read-msg 'collection_name) ; "tk-collection-test-00"
         (read-keyset 'tk_teknik_keyset)
     ) ; returns "collection:9DftCzRuoLygKfph0hkVwuShupH-nKikjrpr8rY8VJk" w "collection_name": "tk-collection-test-03"
       ; returns "collection:ChZOrgqvyP1bAGOhkgP5cEkitoBdH_D-h27Pqt1oW5Q" w "collection_name": "tk-collection-test-02"  
@@ -133,6 +134,8 @@
 ;  ; then add
 ;  ; (marmalade-v2.ledger.MINT "t:TAzOsJdSrVLABBmDPiu1b3UIYHdPuSblnzeIGGRvHeM" "k:b3b015a348f8b9664bb159d28d76b192d88e981e2a18bd7f83ad18035118b07e" 1.0)
 ;  ; select the wallet that has the right to mint w this capability
+
+
 
 ;  ; fourth transasaction(depoly)
 (mint "t:TAzOsJdSrVLABBmDPiu1b3UIYHdPuSblnzeIGGRvHeM"
