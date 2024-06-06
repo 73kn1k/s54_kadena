@@ -124,7 +124,7 @@
 
 
 ;  ; third transasaction(depoly)
-(mint "t:TAzOsJdSrVLABBmDPiu1b3UIYHdPuSblnzeIGGRvHeM"
+(mint "t:qYPZhdVxCqWlWuUSTXpWwAW2KtlsDMbSHsamdrTXiDY"
   (read-msg 'minttoac1)
   (read-keyset 'tk_teknik_keyset)
   1.0
