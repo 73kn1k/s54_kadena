@@ -119,8 +119,8 @@
     (at 'creator-guard (read-msg 'royalty_spec))
 )
 ;  ; capabilities
-;  ; (marmalade-v2.ledger.CREATE-TOKEN "t:TAzOsJdSrVLABBmDPiu1b3UIYHdPuSblnzeIGGRvHeM" {"keys": ["b3b015a348f8b9664bb159d28d76b192d88e981e2a18bd7f83ad18035118b07e"], "pred": "keys-all"})  
-;  ; (marmalade-v2.ledger.MINT "t:TAzOsJdSrVLABBmDPiu1b3UIYHdPuSblnzeIGGRvHeM" "k:b3b015a348f8b9664bb159d28d76b192d88e981e2a18bd7f83ad18035118b07e" 1.0)
+;  ; (marmalade-v2.ledger.CREATE-TOKEN "t:qYPZhdVxCqWlWuUSTXpWwAW2KtlsDMbSHsamdrTXiDY" {"keys": ["b3b015a348f8b9664bb159d28d76b192d88e981e2a18bd7f83ad18035118b07e"], "pred": "keys-all"})  
+;  ; (marmalade-v2.ledger.MINT "t:qYPZhdVxCqWlWuUSTXpWwAW2KtlsDMbSHsamdrTXiDY" "k:b3b015a348f8b9664bb159d28d76b192d88e981e2a18bd7f83ad18035118b07e" 1.0)
 
 
 ;  ; third transasaction(depoly)
@@ -132,12 +132,42 @@
 ;  ; capabilities
 ;  ; (coin.GAS) -->  select the gas payer
 ;  ; then add
-;  ; (marmalade-v2.ledger.MINT "t:TAzOsJdSrVLABBmDPiu1b3UIYHdPuSblnzeIGGRvHeM" "k:b3b015a348f8b9664bb159d28d76b192d88e981e2a18bd7f83ad18035118b07e" 1.0)
+;  ; (marmalade-v2.ledger.MINT "t:qYPZhdVxCqWlWuUSTXpWwAW2KtlsDMbSHsamdrTXiDY" "k:b3b015a348f8b9664bb159d28d76b192d88e981e2a18bd7f83ad18035118b07e" 1.0)
 ;  ; select the wallet that has the right to mint w this capability
 
 
-
 ;  ; fourth transasaction(depoly)
+(create-token
+   (create-token-id
+        {'precision: (read-msg 'precision),
+            'policies: [
+                marmalade-v2.non-fungible-policy-v1,
+                marmalade-v2.guard-policy-v1,
+                marmalade-v2.collection-policy-v1,
+                marmalade-v2.royalty-policy-v1
+            ],
+            'uri: (read-msg 'uri)
+        }
+        (at 'creator-guard (read-msg 'royalty_spec))
+    )   ; "https://demo2.54.wtf/metadata?token=Token00/1" returns "t:TAzOsJdSrVLABBmDPiu1b3UIYHdPuSblnzeIGGRvHeM"
+        ; "https://demo2.54.wtf/metadata?token=Token00/0" returns "t:qYPZhdVxCqWlWuUSTXpWwAW2KtlsDMbSHsamdrTXiDY"
+        ; used for token-id
+    (read-msg 'precision) ; precision
+    (read-msg 'uri)
+    [
+        marmalade-v2.non-fungible-policy-v1,
+        marmalade-v2.guard-policy-v1,
+        marmalade-v2.collection-policy-v1,
+        marmalade-v2.royalty-policy-v1
+    ] ; policies
+    (at 'creator-guard (read-msg 'royalty_spec))
+)
+;  ; capabilities
+;  ; (marmalade-v2.ledger.CREATE-TOKEN "t:TAzOsJdSrVLABBmDPiu1b3UIYHdPuSblnzeIGGRvHeM" {"keys": ["b3b015a348f8b9664bb159d28d76b192d88e981e2a18bd7f83ad18035118b07e"], "pred": "keys-all"})  
+;  ; (marmalade-v2.ledger.MINT "t:TAzOsJdSrVLABBmDPiu1b3UIYHdPuSblnzeIGGRvHeM" "k:b3b015a348f8b9664bb159d28d76b192d88e981e2a18bd7f83ad18035118b07e" 1.0)
+
+
+;  ; fifth transasaction(depoly)
 (mint "t:TAzOsJdSrVLABBmDPiu1b3UIYHdPuSblnzeIGGRvHeM"
   (read-msg 'minttoac1)
   (read-keyset 'tk_teknik_keyset)
