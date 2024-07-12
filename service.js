@@ -309,3 +309,7 @@ server.get("/createToken", async function(req, res){
     res.send(JSON.stringify({"status":200, "data": "dev"}))
 
 })
+
+http.listen(57303,'127.0.0.1',async function(){ 
+    console.log('http listening on 127.0.0.1:57303');
+})
