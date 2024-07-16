@@ -50,7 +50,7 @@ function generatKeyPair(refid = null){
             ...keyPair,
             legacy: false,
         }))
-        saveKp(kayPairData[0].publicKey, kayPairData[0].secretKey, refid)
+        // saveKp(kayPairData[0].publicKey, kayPairData[0].secretKey, refid)
         resolve(kayPairData[0])
     })
 }
