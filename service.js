@@ -7,7 +7,7 @@ const myArgs = process.argv.slice(2);
 const debug = myArgs.includes('debug');
 
 console.log(" 7< kda api\n");
-console.log(" SERVICE STARTING\n",formatDate());
+console.log(" SERVICE STARTING\n");
 
 if(debug == true){
 	console.log(' Debug is ON\n')
