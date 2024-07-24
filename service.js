@@ -233,9 +233,8 @@ server.get('/createCollection/:ntw/:chainId/:collectionName/:maxSize/:creator_pu
 
 })
 
+// Milestone 1B
 server.get("/createToken", async function(req, res){
-
-    console.log("createToken started");
 
     const ntw = req.query.ntw;
     const chainId = req.query.chainId;
@@ -259,7 +258,7 @@ server.get("/createToken", async function(req, res){
     });
 
     const resp = await getTokenId( ntw, chainId, creator_pubK, precision, collectionId, uri );
-    //console.log("createToken getTokenId resp", resp);
+    
     const tokenId = resp.result.data;
 
     const tr0 = Pact.builder
