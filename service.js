@@ -319,6 +319,68 @@ server.get("/createToken", async function(req, res){
 
 })
 
+server.get("/transferToken", async function(req, res){
+
+    console.log("transferToken started");
+
+    const ntw = req.query.ntw;
+    const chainId = req.query.chainId;
+    const tokenId = req.query.tokenId;
+
+    const owner_pubK = req.query.owner_pubK;
+    console.log("owner_pubK",owner_pubK);
+    const owner_pK = await getPk(owner_pubK);
+    const ownerSign = createSignWithKeypair({ 
+        "publicKey": owner_pubK, 
+        "secretKey": owner_pK
+    });
+
+    const receiver_pubK = req.query.customer_pubK;
+   
+    const tr0 = Pact.builder
+    .execution(`
+        (use marmalade-v2.ledger)
+        (transfer-create
+            "${tokenId}"
+            "k:${owner_pubK}"
+            "k:${receiver_pubK}"
+            (read-keyset 'receiver_keyset)
+            1.0
+        )`
+    )
+    .addKeyset('receiver_keyset', 'keys-all', receiver_pubK )
+    .addSigner(s54pubK, (withCapability) => [
+        withCapability('coin.GAS')
+    ])
+    .addSigner(owner_pubK, (withCapability) => [
+        withCapability(
+            'marmalade-v2.ledger.TRANSFER',
+            tokenId,
+            `k:${owner_pubK}`,
+            `k:${receiver_pubK}`,
+            1.0
+        )
+    ])
+    .setMeta({
+        chainId: chainId,
+        sender: 'k:'+s54pubK,
+        gasLimit: 150000,
+        gasPrice: 1.0e-6,
+        ttl: 10 * 60, 
+      })
+    .setNetworkId(ntw)
+    .createTransaction();
+
+    const signedTxby54 = await s54sign(tr0);
+    const signedTx = await ownerSign(signedTxby54);
+   
+    const result = await executeTransaction(ntw, chainId, signedTx)
+    console.log("transferToken executeTransaction result", result); 
+
+    res.send(JSON.stringify({ "status":200, "data": { "tokenId": tokenId, "reqK": result.data.requestKey }}))
+
+})
+
 server.get("/restart", function(req, res){
     res.send(JSON.stringify({"status":200, "data": "restarting"}))
     console.log('\nRestarting...');
