@@ -233,7 +233,7 @@ server.get('/createCollection/:ntw/:chainId/:collectionName/:maxSize/:creator_pu
 
 })
 
-// Milestone 1B
+// Milestone 1A & 1B
 server.get("/createToken", async function(req, res){
 
     const ntw = req.query.ntw;
