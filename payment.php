@@ -224,6 +224,25 @@
     }
   }
 
-    
+  if (isset($_GET["transferTo"])) {
+    if($itemNetworkData[0 + $inx] == "KDA"){
+      if(item_data->tokenID != ""){
+
+        $customer_pubK = str_replace("k:", "", $_GET["transferTo"]);
+        $owner_pubK = str_replace("k:", "", $q->wk);
+
+        // @ service.js #747
+        $url = 'http://127.0.0.1:3000/transferToken?ntw='.(($inx == 0) ? "mainnet01&chainId=8" : "testnet04&chainId=1") . 
+        "&owner_pubK=$owner_pubK"."&tokenId=".(item_data->tokenID)."&customer_pubK=$customer_pubK"."&collectionId=".$itemNetworkData[2 + $inx];
+
+        $kdaResult = httpRequest($url);
+
+        $kdaResultObj = json_decode( $kdaResult );
+
+      } 
+    }
+  }
+
+  . . .
 
       EOF
