@@ -243,6 +243,31 @@
     }
   }
 
+  if(isset($_GET["withdrawKDA"])){
+      
+    header('Content-Type: application/json');
+
+    // @ service.js #693
+    $url = "http://127.0.0.1:57303/withdrawKda";
+
+    $params = [
+      'ntw' => ($_GET["isTestnet"] == 1) ? 'testnet04' : 'mainnet01',
+      'chainId' => ($_GET["isTestnet"] == 1) ? 1 : 8,
+      'fromPubK' => user_data->kdaPubK,
+      'toPubK' => $_GET["withdrawKDA"],
+      'amountKda' => $_GET["amountKda"]
+    ];
+    
+    $response = httpRequest($url, $params);
+
+    error_log("\n\n user_profile withdrawKDA response\n".$response);
+    
+    echo $response;
+
+    exit();
+
+  }
+
   . . .
 
       EOF
