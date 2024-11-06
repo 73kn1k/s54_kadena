@@ -43,9 +43,8 @@
 
       if( MINT == true ) {
         
-          $itemPrice = (item_data->currency == "KDA") ? item_data->precio : (item_data->precio / getKdaPrice());
-          $itemPrice = rtrim(number_format($itemPrice, 8, '.', ''), '0'); // forces max 8 decimal and no 0's 1.20 = 1.2
-          $itemPrice = rtrim($itemPrice, '.'); // deletes de . if no number after it ejem 1.0 = 1. = 1
+          $itemPrice = (item_data->currency == "KDA") ? item_data->price : (item_data->price / getKdaPrice());
+          $itemPrice = number_format($itemPrice, 8, '.', ''); // forces max 8 decimal
 
           // @ service.js #512
           $url = "http://127.0.0.1:3000/createToken";
@@ -54,7 +53,7 @@
             'ntw' => ($isTestnet == 1) ? 'testnet04' : 'mainnet01',
             'chainId' => ($isTestnet == 1) ? 1 : 8,
             'collection_id' => explode("_", item_data->network, 3 + $isTestnet)[2 + $isTestnet],
-            'payableMint' => (item_data->currency == "KDA") ? ((item_data->precio == 0) ? 'false' : 'true') : 'false',
+            'payableMint' => (item_data->currency == "KDA") ? ((item_data->price == 0) ? 'false' : 'true') : 'false',
             'mintPrice' => $itemPrice,
             'minAmount' => "1.0",
             'maxAmount' => "1.0",
@@ -142,7 +141,7 @@
       if($payerBalanceJson->status == 200){
         if($payerBalanceJson->data->status == "success"){
 
-          $itemPrice = (item_data->currency == "KDA") ? item_data->precio : (item_data->precio / getKdaPrice());
+          $itemPrice = (item_data->currency == "KDA") ? item_data->price : (item_data->price / getKdaPrice());
           
           // to avoid presicion problems [it needs to be formatred at the service if integer send and not decimal]
           $itemPrice = number_format($itemPrice, 8, '.', ''); // forces max 8 decimal
@@ -161,7 +160,7 @@
                   'chainId' => ($isTestnet == 1) ? 1 : 8,
                   'collection_id' => explode("_", item_data->network, 3 + $isTestnet)[2 + $isTestnet],
                   'uri' => $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST']. str_replace('./', '/', preg_replace('/\.[^.]+$/', '.json', item_data->file_path)) . "?id=".(item_data->purchased + 1),
-                  'payableMint' => (item_data->currency == "KDA") ? ((item_data->precio == 0) ? 'false' : 'true') : 'false',
+                  'payableMint' => (item_data->currency == "KDA") ? ((item_data->price == 0) ? 'false' : 'true') : 'false',
                   'mintPrice' => $itemPrice,
                   'minAmount' => "1.0",
                   'maxAmount' => "1.0",
@@ -189,6 +188,7 @@
               $params = [
                 'ntw' => ($isTestnet == 1) ? 'testnet04' : 'mainnet01',
                 'chainId' => ($isTestnet == 1) ? 1 : 8,
+                'collection_id' => explode("_", item_data->network, 3 + $isTestnet)[2 + $isTestnet],
                 'itemid' => item_data->id,          
                 'tokenid' => item_data->tokenID,
                 'price' => $itemPrice,
